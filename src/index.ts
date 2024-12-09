@@ -1,1 +1,1 @@
-export type Color = "primary" | "secondary" | "info" | "success" | "danger" | "warning"
+export type Color = "primary" | "secondary" | "info" | "success" | "danger" | "warning" | "light"

@@ -1,15 +1,16 @@
-import { memo, ReactNode } from "react";
-import clsx from "clsx";
-import { Color } from ".";
+import { type ComponentProps, forwardRef, memo } from "react";
+import clsx, { type ClassValue } from "clsx";
+import type { Color } from ".";
 
-interface ButtonProps {
-  children: ReactNode
+interface ButtonProps extends Omit<ComponentProps<"button">, "className"> {
+  className?: ClassValue
   color?: Color
   variant?: "solid" | "outline" | "ghost" | "soft" | "white"
 }
 
-const Button = memo(({ children, variant = "solid", color = "primary" }: ButtonProps) => {
+const Button = memo(forwardRef<HTMLButtonElement, ButtonProps>(({ children, className, variant = "solid", color = "primary", ...otherProps }, ref) => {
   const classes = clsx(
+    className,
     "py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border focus:outline-none disabled:opacity-50 disabled:pointer-events-none",
     {
       "border-transparent": ["ghost", "solid"].includes(variant),
@@ -42,11 +43,11 @@ const Button = memo(({ children, variant = "solid", color = "primary" }: ButtonP
   )
 
   return (
-    <button type="button" className={classes}>
+    <button ref={ref} className={classes} {...otherProps}>
       {children}
     </button>
   )
-})
+}))
 
 Button.displayName = "Button"
 
