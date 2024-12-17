@@ -4,12 +4,15 @@ import { Color } from "."
 
 interface AlertProps {
   title?: ReactNode
+  subtitle?: ReactNode
   children?: ReactNode
   color?: Color
   variant?: "solid" | "soft"
+  icon?: ReactNode
+  footer?: ReactNode[]
 }
 
-const Alert = memo(({ title, children, color = "primary", variant = "solid" }: AlertProps) => {
+const Alert = memo(({ title, subtitle, children, icon, footer, color = "primary", variant = "solid" }: AlertProps) => {
   const classes = clsx(
     "mt-2 text-sm rounded-lg p-4",
     {
@@ -38,8 +41,22 @@ const Alert = memo(({ title, children, color = "primary", variant = "solid" }: A
 
   return (
     <div className={classes} role="alert" tabIndex={-1} aria-labelledby="hs-solid-color-info-label">
-      <span className="font-bold">{title}</span>
-      <div>{children}</div>
+      <div className="flex">
+        {icon && <div className="shrink-0">{icon}</div>}
+
+        <div className={clsx({ "ms-4": icon })}>
+          <span className="font-bold">{title}</span>
+          {subtitle && ` ${subtitle}`}
+
+          {children && <div className="mt-2">{children}</div>}
+
+          {footer && (
+            <div className="mt-4">
+              <div className="flex gap-x-3">{footer}</div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   )
 })
